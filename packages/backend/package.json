@@ -5,6 +5,7 @@
     "start": "tsx -r dotenv/config index.ts",
     "db:clean": "tsx -r dotenv/config migrates/clean.ts",
     "db:migrate": "tsx -r dotenv/config migrates/index.ts",
+    "db:fillTicket": "tsx -r dotenv/config migrates/fillTicket.ts",
     "db:fresh": "pnpm run db:clean && pnpm run db:migrate",
     "dev": "nodemon -e ts --exec \"npm run start\""
   },
