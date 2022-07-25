@@ -45,6 +45,7 @@ onMounted(() => {
 </script>
 <template>
   <article>
+    <h2 class="text-xl m-2">Ticket sale/day</h2>
     <LineChart :chart-data="chartData" />
   </article>
 </template>

@@ -106,7 +106,7 @@ app.get("/report", async (req, res) => {
   // const { type, date } = req.query;
   // const ticketA = await TicketBuyed.find({ type: "A" }).limit(10);
   type CountDataByIssuedAt = { issuedAt: string; count: number };
-  const start = sub(new Date(), { days: 7 });
+  const start = sub(new Date(), { days: 30 });
   const end = new Date();
   const tickets: {
     _id: string;
@@ -146,6 +146,7 @@ app.get("/report", async (req, res) => {
         },
       },
     },
+    { $sort: { _id: 1 } },
   ]);
 
   const report: Report<TicketReport> = {
