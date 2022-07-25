@@ -1,5 +1,5 @@
 {
-  "name": "vue-forge-boilerplate",
+  "name": "vue-express-mono-repo-template",
   "version": "0.0.0",
   "packageManager": "pnpm@7.5.0",
   "scripts": {
