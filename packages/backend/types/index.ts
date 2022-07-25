@@ -28,5 +28,12 @@ export interface Ticket {
 export interface TicketBuyed {
   id: ID;
   status: TicketBuyedStatus;
+  createdAt: Date;
+  issuedAt: Date;
   detail: Ticket;
+}
+
+export interface TicketReport {
+  label: string;
+  data: number[];
 }

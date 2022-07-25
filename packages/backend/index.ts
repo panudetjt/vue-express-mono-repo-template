@@ -52,6 +52,7 @@ const buyTicket = async (id: string, amountString: string, res: Response) => {
   for (let i = 0; i < amount; i++) {
     const ticketBuyed = new TicketBuyed({
       id: randomUUID(),
+      createdAt: new Date(),
       status: TicketBuyedStatus.AVAILABLE,
       detail: ticket,
     });
@@ -91,8 +92,14 @@ app.post("/use/:ticketId", async (req, res) => {
     return;
   }
   ticketBuyed.status = TicketBuyedStatus.USED;
+  ticketBuyed.issuedAt = new Date();
   await ticketBuyed.save();
   res.json(ticketBuyed.toJSON());
+});
+
+app.get("/report", (req, res) => {
+  // const { type, date } = req.query;
+  
 });
 
 app.get("/ticket/:ticketId", async (req, res) => {

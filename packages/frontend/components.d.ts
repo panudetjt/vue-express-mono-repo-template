@@ -8,10 +8,12 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AppButton: typeof import('./src/components/AppButton.vue')['default']
+    BarChart: typeof import('./src/components/BarChart.vue')['default']
     Base: typeof import('./src/components/TicketCard/Base.vue')['default']
     copy: typeof import('./src/components/TicketCard/SaleTicket copy.vue')['default']
     EclipseSpinner: typeof import('./src/components/EclipseSpinner.vue')['default']
     ElipseSpinner: typeof import('./src/components/ElipseSpinner.vue')['default']
+    LineChart: typeof import('./src/components/LineChart.vue')['default']
     MyTicket: typeof import('./src/components/TicketCard/MyTicket.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

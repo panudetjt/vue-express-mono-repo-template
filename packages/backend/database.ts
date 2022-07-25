@@ -24,6 +24,8 @@ export const Ticket = model("Ticket", TicketSchema);
 const TicketBuyedSchema = new Schema<ITicketBuyed>({
   id: { type: String, required: true },
   status: { type: String, reqiured: true },
+  createdAt: { type: Date, required: true },
+  issuedAt: { type: Date, required: false },
   detail: { type: Schema.Types.ObjectId, ref: "Ticket" },
 }).set("toJSON", {
   transform: (_, ret) => {
