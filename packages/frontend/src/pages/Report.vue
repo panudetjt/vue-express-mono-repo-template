@@ -39,7 +39,6 @@ onMounted(() => {
   getReport().then((data) => {
     labels.value = data.labels;
     datasets.value = data.datasets;
-    console.log(data);
   });
 });
 </script>
