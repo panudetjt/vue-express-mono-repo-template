@@ -27,6 +27,7 @@ export interface Ticket {
 }
 export interface TicketBuyed {
   id: ID;
+  type: TicketType;
   status: TicketBuyedStatus;
   createdAt: Date;
   issuedAt: Date;
@@ -36,4 +37,9 @@ export interface TicketBuyed {
 export interface TicketReport {
   label: string;
   data: number[];
+}
+
+export interface Report<T> {
+  labels: string[];
+  datasets: Record<string, T>;
 }

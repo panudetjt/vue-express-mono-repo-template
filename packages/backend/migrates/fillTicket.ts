@@ -1,4 +1,4 @@
-import { DatabaseInit, Ticket, TicketBuyed } from "../database";
+import { DatabaseInit, Ticket } from "../database";
 (async () => {
   try {
     console.log("Filling ticket.....");

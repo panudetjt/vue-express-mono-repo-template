@@ -6,12 +6,14 @@
     "db:clean": "tsx -r dotenv/config migrates/clean.ts",
     "db:migrate": "tsx -r dotenv/config migrates/index.ts",
     "db:fillTicket": "tsx -r dotenv/config migrates/fillTicket.ts",
+    "db:fake": "tsx -r dotenv/config migrates/fake.ts",
     "db:fresh": "pnpm run db:clean && pnpm run db:migrate",
     "dev": "nodemon -e ts --exec \"npm run start\""
   },
   "keywords": [],
   "license": "MIT",
   "dependencies": {
+    "date-fns": "^2.29.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mongoose": "^6.4.6"

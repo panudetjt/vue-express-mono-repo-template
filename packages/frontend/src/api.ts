@@ -39,4 +39,18 @@ export const useTicket = (id: string) => {
       .then((json) => resolve(json))
       .catch((error) => reject(error));
   });
-}
+};
+
+export const getReport = () => {
+  return new Promise<unknown>((resolve, reject) => {
+    fetch(`${baseUrl}/report`, {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) throw response;
+        return response.json();
+      })
+      .then((json) => resolve(json))
+      .catch((error) => reject(error));
+  });
+};

@@ -1,12 +1,18 @@
 import { randomUUID } from "crypto";
 import express, { type Response } from "express";
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, Model } from "mongoose";
 import { DatabaseInit, Ticket, TicketBuyed } from "./database";
 import {
+  ID,
+  Report,
   TicketBuyed as ITicketBuyed,
   TicketBuyedStatus,
+  TicketReport,
   TicketStatus,
+  TicketType,
 } from "./types";
+import { add, formatISO, sub } from "date-fns";
+import { format } from "path";
 
 const app = express();
 const port = 3000;
@@ -52,6 +58,7 @@ const buyTicket = async (id: string, amountString: string, res: Response) => {
   for (let i = 0; i < amount; i++) {
     const ticketBuyed = new TicketBuyed({
       id: randomUUID(),
+      type: ticket.type,
       createdAt: new Date(),
       status: TicketBuyedStatus.AVAILABLE,
       detail: ticket,
@@ -97,9 +104,79 @@ app.post("/use/:ticketId", async (req, res) => {
   res.json(ticketBuyed.toJSON());
 });
 
-app.get("/report", (req, res) => {
+app.get("/report", async (req, res) => {
   // const { type, date } = req.query;
-  
+  // const ticketA = await TicketBuyed.find({ type: "A" }).limit(10);
+  type CountDataByIssuedAt = { issuedAt: string; count: number };
+  const start = sub(new Date(), { days: 7 });
+  const end = new Date();
+  const tickets: {
+    _id: string;
+    data: CountDataByIssuedAt[];
+  }[] = await TicketBuyed.aggregate([
+    {
+      $match: {
+        issuedAt: {
+          $gte: start,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          type: "$type",
+          issuedAt: {
+            $dateFromParts: {
+              year: { $year: "$issuedAt" },
+              month: { $month: "$issuedAt" },
+              day: { $dayOfMonth: "$issuedAt" },
+            },
+          },
+        },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { "_id.issuedAt": 1 } },
+    {
+      $group: {
+        _id: "$_id.type",
+        data: {
+          $push: {
+            issuedAt: "$_id.issuedAt",
+            count: "$count",
+          },
+        },
+      },
+    },
+  ]);
+
+  const report: Report<TicketReport> = {
+    labels: [],
+    datasets: {},
+  };
+
+  let dateCursor = add(start, { days: 1 });
+  while (dateCursor <= end) {
+    report.labels.push(dateCursor.toISOString());
+    dateCursor = add(dateCursor, { days: 1 });
+  }
+
+  const findIssuedAt = (label: string, data: CountDataByIssuedAt): boolean => {
+    return (
+      formatISO(new Date(label), { representation: "date" }) ===
+      formatISO(new Date(data.issuedAt), { representation: "date" })
+    );
+  };
+  for (const ticket of tickets) {
+    report.datasets[ticket._id] = {
+      label: ticket._id,
+      data: report.labels.map((x) => {
+        const found = ticket.data.find((y) => findIssuedAt(x, y));
+        return found ? found.count : 0;
+      }),
+    };
+  }
+  res.json(report);
 });
 
 app.get("/ticket/:ticketId", async (req, res) => {

@@ -23,6 +23,7 @@ export const Ticket = model("Ticket", TicketSchema);
 
 const TicketBuyedSchema = new Schema<ITicketBuyed>({
   id: { type: String, required: true },
+  type: { type: String, reqiured: true },
   status: { type: String, reqiured: true },
   createdAt: { type: Date, required: true },
   issuedAt: { type: Date, required: false },
@@ -42,6 +43,7 @@ export const TicketBuyed = model<ITicketBuyed>(
 export const DatabaseInit = async () => {
   try {
     // db.tickets.aggregate([{ $match: { id: "id"}}, { $lookup: { from: "ticketonsales", localField: "info", foreignField: "_id", as: "info"}}, { $unwind: "$info"}, {$limit: 1} ])
+    // db.ticketbuyeds.aggregate([ { $lookup: { from: "tickets", localField: "detail", foreignField: "_id", as: "detail"}}, { $unwind: "$detail"}, { $match: {"detail.type": "D"}}])
     await connect(DATABASE_URL || "");
   } catch (e) {
     console.error(e);
