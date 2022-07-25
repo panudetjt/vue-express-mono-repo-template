@@ -1,59 +1,47 @@
-# vue-forge-boilerplate
+# vue-express-mono-repo-template
 
-This template should help get you started developing with Vue 3 in Vite.
+Original template from [vuejs-forge-boilerplate](https://github.com/vueschool/vuejs-forge-boilerplate)
 
-## Recommended IDE Setup
+## Instruction
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+1. Install dependencies with
+```
+pnpm install -r
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+2. Start docker compose
+```
+docker compose up -d
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
+3. Migrate database 
+```
+pnpm --filter backend run db:fresh
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
+3. (optional) fake database
+```
+pnpm --filter backend run db:fake
 ```
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run build
-npm run test:e2e # or `npm run test:e2e:ci` for headless testing
+4. Start dev server
+```
+pnpm run start
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## path
 
-```sh
-npm run lint
-```
+- /
+- /report
+
+
+## Technology stack
+
+- pnpm
+- mongoDB
+- vue 3
+
+## Strength of Microfrontend
+
+ทำให้แต่ละ feature มีทีมที่รับผิดชอบขัดเจน ทำให้ทุก ๆ ทีมพยายามทำ feature ที่รับผิดชอบให้ดีที่สุดสำหรับผู้ใช้งาน
+
