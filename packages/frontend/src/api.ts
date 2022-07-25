@@ -1,4 +1,4 @@
-import type { Ticket, TicketBuyed } from "backend/types";
+import type { Report, Ticket, TicketBuyed, TicketReport } from "backend/types";
 export const baseUrl = "http://localhost:3000";
 
 export const getTickets = () => {
@@ -42,7 +42,7 @@ export const useTicket = (id: string) => {
 };
 
 export const getReport = () => {
-  return new Promise<unknown>((resolve, reject) => {
+  return new Promise<Report<TicketReport>>((resolve, reject) => {
     fetch(`${baseUrl}/report`, {
       method: "GET",
     })

@@ -1,18 +1,16 @@
 import { randomUUID } from "crypto";
 import express, { type Response } from "express";
-import { HydratedDocument, Model } from "mongoose";
+import { HydratedDocument } from "mongoose";
 import { DatabaseInit, Ticket, TicketBuyed } from "./database";
 import {
-  ID,
   Report,
   TicketBuyed as ITicketBuyed,
   TicketBuyedStatus,
   TicketReport,
   TicketStatus,
-  TicketType,
 } from "./types";
 import { add, formatISO, sub } from "date-fns";
-import { format } from "path";
+import { formatDate } from "./utils/format-date";
 
 const app = express();
 const port = 3000;
@@ -152,11 +150,14 @@ app.get("/report", async (req, res) => {
 
   const report: Report<TicketReport> = {
     labels: [],
-    datasets: {},
+    datasets: [],
   };
 
-  let dateCursor = add(start, { days: 1 });
-  while (dateCursor <= end) {
+  const dateOnly = (date: Date) =>
+    new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  let dateCursor = dateOnly(start);
+  const endCursor = dateOnly(end);
+  while (dateCursor < endCursor) {
     report.labels.push(dateCursor.toISOString());
     dateCursor = add(dateCursor, { days: 1 });
   }
@@ -168,13 +169,13 @@ app.get("/report", async (req, res) => {
     );
   };
   for (const ticket of tickets) {
-    report.datasets[ticket._id] = {
+    report.datasets.push({
       label: ticket._id,
       data: report.labels.map((x) => {
         const found = ticket.data.find((y) => findIssuedAt(x, y));
         return found ? found.count : 0;
       }),
-    };
+    });
   }
   res.json(report);
 });

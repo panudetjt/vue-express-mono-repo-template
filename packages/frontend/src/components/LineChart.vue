@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { PropType } from "vue";
+import { computed, type PropType } from "vue";
+import { randomIndex } from "backend/utils/random";
 
 import { Line } from "vue-chartjs";
 
@@ -70,12 +71,28 @@ const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
 };
+
+const bgColor = ["#f87171", "#a3e635", "#38bdf8", "#c084fc"];
+
+const chartData = computed(() => {
+  return {
+    labels: props.chartData.labels,
+    datasets: (props.chartData.datasets || []).map((x, i) => {
+      const color = bgColor[i % bgColor.length];
+      return {
+        ...x,
+        borderColor: color,
+        backgroundColor: color,
+      };
+    }),
+  };
+});
 </script>
 
 <template>
   <Line
     :chart-options="chartOptions"
-    :chart-data="props.chartData"
+    :chart-data="chartData"
     :chart-id="chartId"
     :dataset-id-key="datasetIdKey"
     :plugins="props.plugins"

@@ -3,9 +3,7 @@ import { HydratedDocument } from "mongoose";
 import { DatabaseInit, Ticket, TicketBuyed } from "../database";
 import { TicketBuyed as ITicketBuyed, TicketBuyedStatus } from "../types";
 import { sub, add, differenceInDays } from "date-fns";
-const randomIndex = (length: number): number =>
-  Math.floor(Math.random() * length);
-const randomBoolean = (): boolean => Math.random() <= 0.5;
+import { randomIndex } from "../utils/random";
 const TicketBuyedStatusList = Object.values(TicketBuyedStatus);
 (async () => {
   try {

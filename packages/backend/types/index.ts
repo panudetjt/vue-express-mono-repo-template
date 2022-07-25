@@ -41,5 +41,5 @@ export interface TicketReport {
 
 export interface Report<T> {
   labels: string[];
-  datasets: Record<string, T>;
+  datasets: T[];
 }
